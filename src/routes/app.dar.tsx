@@ -74,20 +74,24 @@ function DarPage() {
     setError("");
   };
 
+  const nameOf = (id: string) =>
+    data.employees.find((e) => e.id === id)?.name ?? "—";
+
   const darColumns = [
-    { header: "Employee", value: (d: DarRecord) => d.employeeName },
-    { header: "Action Type", value: (d: DarRecord) => d.actionType },
+    { header: "Employee", value: (d: DarRecord) => nameOf(d.employeeId) },
+    { header: "Action Type", value: (d: DarRecord) => d.type },
     { header: "Date", value: (d: DarRecord) => fmtDate(d.date) },
-    { header: "Details", value: (d: DarRecord) => d.details },
+    { header: "Details", value: (d: DarRecord) => d.description },
     { header: "Recorded By", value: (d: DarRecord) => d.recordedBy },
   ];
   const rewardColumns = [
-    { header: "Employee", value: (r: RewardRecord) => r.employeeName },
-    { header: "Reward", value: (r: RewardRecord) => r.rewardType },
+    { header: "Employee", value: (r: RewardRecord) => nameOf(r.employeeId) },
+    { header: "Reward", value: (r: RewardRecord) => r.type },
     { header: "Date", value: (r: RewardRecord) => fmtDate(r.date) },
-    { header: "Details", value: (r: RewardRecord) => r.details },
+    { header: "Details", value: (r: RewardRecord) => r.description },
     { header: "Recorded By", value: (r: RewardRecord) => r.recordedBy },
   ];
+
 
   const dars = useMemo(
     () => [...data.dar].sort((a, b) => b.date.localeCompare(a.date)),
