@@ -10,33 +10,135 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppRouteImport } from './routes/app'
+import { Route as RosterRouteImport } from './routes/roster'
+import { Route as AppDarRouteImport } from './routes/app.dar'
+import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
+import { Route as AppDesignationsRouteImport } from './routes/app.designations'
+import { Route as AppEmployeesRouteImport } from './routes/app.employees'
+import { Route as AppMovementsRouteImport } from './routes/app.movements'
+import { Route as AppRetirementRouteImport } from './routes/app.retirement'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RosterRoute = RosterRouteImport.update({
+  id: '/roster',
+  path: '/roster',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppDarRoute = AppDarRouteImport.update({
+  id: '/dar',
+  path: '/dar',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDesignationsRoute = AppDesignationsRouteImport.update({
+  id: '/designations',
+  path: '/designations',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppEmployeesRoute = AppEmployeesRouteImport.update({
+  id: '/employees',
+  path: '/employees',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMovementsRoute = AppMovementsRouteImport.update({
+  id: '/movements',
+  path: '/movements',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRetirementRoute = AppRetirementRouteImport.update({
+  id: '/retirement',
+  path: '/retirement',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/roster': typeof RosterRoute
+  '/app/dar': typeof AppDarRoute
+  '/app/dashboard': typeof AppDashboardRoute
+  '/app/designations': typeof AppDesignationsRoute
+  '/app/employees': typeof AppEmployeesRoute
+  '/app/movements': typeof AppMovementsRoute
+  '/app/retirement': typeof AppRetirementRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/roster': typeof RosterRoute
+  '/app/dar': typeof AppDarRoute
+  '/app/dashboard': typeof AppDashboardRoute
+  '/app/designations': typeof AppDesignationsRoute
+  '/app/employees': typeof AppEmployeesRoute
+  '/app/movements': typeof AppMovementsRoute
+  '/app/retirement': typeof AppRetirementRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/roster': typeof RosterRoute
+  '/app/dar': typeof AppDarRoute
+  '/app/dashboard': typeof AppDashboardRoute
+  '/app/designations': typeof AppDesignationsRoute
+  '/app/employees': typeof AppEmployeesRoute
+  '/app/movements': typeof AppMovementsRoute
+  '/app/retirement': typeof AppRetirementRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/roster'
+    | '/app/dar'
+    | '/app/dashboard'
+    | '/app/designations'
+    | '/app/employees'
+    | '/app/movements'
+    | '/app/retirement'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/app'
+    | '/roster'
+    | '/app/dar'
+    | '/app/dashboard'
+    | '/app/designations'
+    | '/app/employees'
+    | '/app/movements'
+    | '/app/retirement'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/roster'
+    | '/app/dar'
+    | '/app/dashboard'
+    | '/app/designations'
+    | '/app/employees'
+    | '/app/movements'
+    | '/app/retirement'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  RosterRoute: typeof RosterRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +150,90 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/roster': {
+      id: '/roster'
+      path: '/roster'
+      fullPath: '/roster'
+      preLoaderRoute: typeof RosterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/dar': {
+      id: '/app/dar'
+      path: '/dar'
+      fullPath: '/app/dar'
+      preLoaderRoute: typeof AppDarRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/dashboard': {
+      id: '/app/dashboard'
+      path: '/dashboard'
+      fullPath: '/app/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/designations': {
+      id: '/app/designations'
+      path: '/designations'
+      fullPath: '/app/designations'
+      preLoaderRoute: typeof AppDesignationsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/employees': {
+      id: '/app/employees'
+      path: '/employees'
+      fullPath: '/app/employees'
+      preLoaderRoute: typeof AppEmployeesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/movements': {
+      id: '/app/movements'
+      path: '/movements'
+      fullPath: '/app/movements'
+      preLoaderRoute: typeof AppMovementsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/retirement': {
+      id: '/app/retirement'
+      path: '/retirement'
+      fullPath: '/app/retirement'
+      preLoaderRoute: typeof AppRetirementRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppDarRoute: typeof AppDarRoute
+  AppDashboardRoute: typeof AppDashboardRoute
+  AppDesignationsRoute: typeof AppDesignationsRoute
+  AppEmployeesRoute: typeof AppEmployeesRoute
+  AppMovementsRoute: typeof AppMovementsRoute
+  AppRetirementRoute: typeof AppRetirementRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppDarRoute: AppDarRoute,
+  AppDashboardRoute: AppDashboardRoute,
+  AppDesignationsRoute: AppDesignationsRoute,
+  AppEmployeesRoute: AppEmployeesRoute,
+  AppMovementsRoute: AppMovementsRoute,
+  AppRetirementRoute: AppRetirementRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  RosterRoute: RosterRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
