@@ -14,6 +14,7 @@ import { Route as AppRouteImport } from './routes/app'
 import { Route as RosterRouteImport } from './routes/roster'
 import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
 import { Route as AppDesignationsRouteImport } from './routes/app.designations'
+import { Route as AppRetirementRouteImport } from './routes/app.retirement'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,6 +41,11 @@ const AppDesignationsRoute = AppDesignationsRouteImport.update({
   path: '/designations',
   getParentRoute: () => AppRoute,
 } as any)
+const AppRetirementRoute = AppRetirementRouteImport.update({
+  id: '/retirement',
+  path: '/retirement',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/roster': typeof RosterRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/designations': typeof AppDesignationsRoute
+  '/app/retirement': typeof AppRetirementRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/roster': typeof RosterRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/designations': typeof AppDesignationsRoute
+  '/app/retirement': typeof AppRetirementRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,12 +70,25 @@ export interface FileRoutesById {
   '/roster': typeof RosterRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/designations': typeof AppDesignationsRoute
+  '/app/retirement': typeof AppRetirementRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/app' | '/roster' | '/app/dashboard' | '/app/designations'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/roster'
+    | '/app/dashboard'
+    | '/app/designations'
+    | '/app/retirement'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app' | '/roster' | '/app/dashboard' | '/app/designations'
+  to:
+    | '/'
+    | '/app'
+    | '/roster'
+    | '/app/dashboard'
+    | '/app/designations'
+    | '/app/retirement'
   id:
     | '__root__'
     | '/'
@@ -75,6 +96,7 @@ export interface FileRouteTypes {
     | '/roster'
     | '/app/dashboard'
     | '/app/designations'
+    | '/app/retirement'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -120,17 +142,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDesignationsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/retirement': {
+      id: '/app/retirement'
+      path: '/retirement'
+      fullPath: '/app/retirement'
+      preLoaderRoute: typeof AppRetirementRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
   AppDesignationsRoute: typeof AppDesignationsRoute
+  AppRetirementRoute: typeof AppRetirementRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
   AppDesignationsRoute: AppDesignationsRoute,
+  AppRetirementRoute: AppRetirementRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
