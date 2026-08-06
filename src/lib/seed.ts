@@ -118,17 +118,17 @@ export function seedData() {
       gender: gender as Employee["gender"],
       tokenNo: `TKN${pad(1200 + i * 7, 4)}`,
       hrmsId: `H${pad(10000 + i * 137, 5)}`,
-      batch: BATCHES[i % BATCHES.length],
-      designation: DESIGNATIONS[i % DESIGNATIONS.length],
+      batch: BATCHES[i % BATCHES.length]!,
+      designation: DESIGNATIONS[i % DESIGNATIONS.length]!,
       phone: `9${pad(800000000 + i * 1234567, 9)}`.slice(0, 10),
       emergencyContact: `8${pad(700000000 + i * 7654321, 9)}`.slice(0, 10),
-      address: `#${12 + i}, ${["Rail Nagar", "Yeshwanthpur", "Malleshwaram", "Peenya", "Yelahanka"][i % 5]}, Bengaluru - 5600${pad(i % 99)}`,
+      address: `#${12 + i}, ${["Rail Nagar", "Yeshwanthpur", "Malleshwaram", "Peenya", "Yelahanka"][i % 5]!}, Bengaluru - 5600${pad(i % 99)}`,
       aadhaar: i === 6 ? "" : aadhaarFor(i + 1),
       pan: panFor(i + 1),
       pfNumber: `KN/BNG/${pad(45000 + i * 31, 5)}`,
       dob,
       doa,
-      qualification: QUALIFICATIONS[i % QUALIFICATIONS.length],
+      qualification: QUALIFICATIONS[i % QUALIFICATIONS.length]!,
       documents: [
         {
           id: `doc-${i}-1`,
@@ -162,7 +162,7 @@ export function seedData() {
     {
       id: "evt-001",
       employeeId: "emp-001",
-      employeeName: employees[0].name,
+      employeeName: employees[0]!.name,
       type: "Promotion",
       from: "Tech-I",
       to: "Sr.Tech",
@@ -173,7 +173,7 @@ export function seedData() {
     {
       id: "evt-002",
       employeeId: "emp-004",
-      employeeName: employees[3].name,
+      employeeName: employees[3]!.name,
       type: "Promotion",
       from: "Tech-III",
       to: "Tech-II",
@@ -184,7 +184,7 @@ export function seedData() {
     {
       id: "evt-003",
       employeeId: "emp-013",
-      employeeName: employees[12].name,
+      employeeName: employees[12]!.name,
       type: "Transfer",
       from: "Batch C",
       to: "Transferred Out of Depot",
@@ -195,7 +195,7 @@ export function seedData() {
     {
       id: "evt-004",
       employeeId: "emp-008",
-      employeeName: employees[7].name,
+      employeeName: employees[7]!.name,
       type: "Transfer",
       from: "General Pool",
       to: "Rajdhani Batch",
@@ -206,7 +206,7 @@ export function seedData() {
     {
       id: "evt-005",
       employeeId: "emp-018",
-      employeeName: employees[17].name,
+      employeeName: employees[17]!.name,
       type: "Early Retirement",
       from: "Tech-II",
       to: "Retired (Early)",
@@ -304,20 +304,20 @@ export function seedData() {
   ];
 
   const activityTemplates: [string, string][] = [
-    ["Employee added", employees[26].name],
-    ["Employee record edited", employees[3].name],
-    ["Promotion recorded", `${employees[3].name} — Tech-III → Tech-II`],
-    ["Transfer recorded", `${employees[7].name} — General Pool → Rajdhani Batch`],
+    ["Employee added", employees[26]!.name],
+    ["Employee record edited", employees[3]!.name],
+    ["Promotion recorded", `${employees[3]!.name} — Tech-III → Tech-II`],
+    ["Transfer recorded", `${employees[7]!.name} — General Pool → Rajdhani Batch`],
     ["DAR module accessed", "DAR & Rewards"],
-    ["DAR record added", employees[10].name],
-    ["Reward record added", employees[14].name],
-    ["Aadhaar revealed", employees[1].name],
+    ["DAR record added", employees[10]!.name],
+    ["Reward record added", employees[14]!.name],
+    ["Aadhaar revealed", employees[1]!.name],
     ["Designation added", "Miscellaneous"],
     ["Batch added", "Sick Line/IOH"],
-    ["Early retirement recorded", employees[17].name],
+    ["Early retirement recorded", employees[17]!.name],
     ["Excel export", "Employees list"],
     ["PDF export", "Retirement forecast"],
-    ["Employee record edited", employees[20].name],
+    ["Employee record edited", employees[20]!.name],
     ["Login", "HR Manager"],
   ];
   const activity: ActivityEntry[] = activityTemplates.map(([action, target], i) => ({
