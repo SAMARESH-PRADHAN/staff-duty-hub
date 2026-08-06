@@ -71,7 +71,7 @@ function Field({
   full,
 }: {
   label: string;
-  error?: string;
+  error?: string | undefined;
   children: React.ReactNode;
   full?: boolean;
 }) {
@@ -117,20 +117,20 @@ export function EmployeeForm({
 
   const validate = () => {
     const e: Record<string, string> = {};
-    if (!form.name.trim()) e.name = "Full name is required.";
-    if (!form.tokenNo.trim()) e.tokenNo = "Token number is required.";
+    if (!form.name.trim()) e["name"] = "Full name is required.";
+    if (!form.tokenNo.trim()) e["tokenNo"] = "Token number is required.";
     if (!/^.{6}$/.test(form.hrmsId.trim()))
-      e.hrmsId = "HRMS-ID must be exactly 6 characters.";
-    if (!form.designation) e.designation = "Designation is required.";
-    if (!form.batch) e.batch = "Batch is required.";
+      e["hrmsId"] = "HRMS-ID must be exactly 6 characters.";
+    if (!form.designation) e["designation"] = "Designation is required.";
+    if (!form.batch) e["batch"] = "Batch is required.";
     if (form.phone && !/^[0-9]{10}$/.test(form.phone))
-      e.phone = "Phone must be 10 digits.";
+      e["phone"] = "Phone must be 10 digits.";
     if (form.aadhaar && !/^[0-9]{12}$/.test(form.aadhaar))
-      e.aadhaar = "Aadhaar must be exactly 12 numeric digits.";
+      e["aadhaar"] = "Aadhaar must be exactly 12 numeric digits.";
     if (form.pan && !PAN_RE.test(form.pan.toUpperCase()))
-      e.pan = "PAN must be 5 letters, 4 digits and 1 letter (e.g. ABCDE1234F).";
-    if (!form.dob) e.dob = "Date of birth is required.";
-    if (!form.doa) e.doa = "Date of appointment is required.";
+      e["pan"] = "PAN must be 5 letters, 4 digits and 1 letter (e.g. ABCDE1234F).";
+    if (!form.dob) e["dob"] = "Date of birth is required.";
+    if (!form.doa) e["doa"] = "Date of appointment is required.";
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -204,7 +204,7 @@ export function EmployeeForm({
                 />
               </div>
             </div>
-            <Field label="Full Name" error={errors.name}>
+            <Field label="Full Name" error={errors["name"]}>
               <Input
                 value={form.name}
                 onChange={(e) => change("name", e.target.value)}
@@ -228,14 +228,14 @@ export function EmployeeForm({
                 </SelectContent>
               </Select>
             </Field>
-            <Field label="Token Number" error={errors.tokenNo}>
+            <Field label="Token Number" error={errors["tokenNo"]}>
               <Input
                 value={form.tokenNo}
                 onChange={(e) => change("tokenNo", e.target.value)}
                 placeholder="TKN1234"
               />
             </Field>
-            <Field label="HRMS-ID (6 characters)" error={errors.hrmsId}>
+            <Field label="HRMS-ID (6 characters)" error={errors["hrmsId"]}>
               <Input
                 value={form.hrmsId}
                 maxLength={6}
@@ -243,7 +243,7 @@ export function EmployeeForm({
                 placeholder="H10023"
               />
             </Field>
-            <Field label="Batch" error={errors.batch}>
+            <Field label="Batch" error={errors["batch"]}>
               <Select value={form.batch} onValueChange={(v) => change("batch", v)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select batch" />
@@ -257,7 +257,7 @@ export function EmployeeForm({
                 </SelectContent>
               </Select>
             </Field>
-            <Field label="Designation" error={errors.designation}>
+            <Field label="Designation" error={errors["designation"]}>
               <Select
                 value={form.designation}
                 onValueChange={(v) => change("designation", v)}
@@ -277,7 +277,7 @@ export function EmployeeForm({
           </Section>
 
           <Section title="Contact">
-            <Field label="Phone Number" error={errors.phone}>
+            <Field label="Phone Number" error={errors["phone"]}>
               <Input
                 value={form.phone}
                 inputMode="numeric"
@@ -303,7 +303,7 @@ export function EmployeeForm({
           </Section>
 
           <Section title="Identity">
-            <Field label="Aadhaar Number" error={errors.aadhaar}>
+            <Field label="Aadhaar Number" error={errors["aadhaar"]}>
               <Input
                 value={form.aadhaar}
                 inputMode="numeric"
@@ -312,7 +312,7 @@ export function EmployeeForm({
                 placeholder="123412341234"
               />
             </Field>
-            <Field label="PAN Number" error={errors.pan}>
+            <Field label="PAN Number" error={errors["pan"]}>
               <Input
                 value={form.pan}
                 maxLength={10}
@@ -329,14 +329,14 @@ export function EmployeeForm({
           </Section>
 
           <Section title="Service">
-            <Field label="Date of Birth" error={errors.dob}>
+            <Field label="Date of Birth" error={errors["dob"]}>
               <Input
                 type="date"
                 value={form.dob}
                 onChange={(e) => change("dob", e.target.value)}
               />
             </Field>
-            <Field label="Date of Appointment" error={errors.doa}>
+            <Field label="Date of Appointment" error={errors["doa"]}>
               <Input
                 type="date"
                 value={form.doa}
