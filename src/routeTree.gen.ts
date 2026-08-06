@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as RosterRouteImport } from './routes/roster'
 import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
+import { Route as AppDesignationsRouteImport } from './routes/app.designations'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,18 +35,25 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
+const AppDesignationsRoute = AppDesignationsRouteImport.update({
+  id: '/designations',
+  path: '/designations',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/roster': typeof RosterRoute
   '/app/dashboard': typeof AppDashboardRoute
+  '/app/designations': typeof AppDesignationsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/roster': typeof RosterRoute
   '/app/dashboard': typeof AppDashboardRoute
+  '/app/designations': typeof AppDesignationsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +61,20 @@ export interface FileRoutesById {
   '/app': typeof AppRouteWithChildren
   '/roster': typeof RosterRoute
   '/app/dashboard': typeof AppDashboardRoute
+  '/app/designations': typeof AppDesignationsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/app' | '/roster' | '/app/dashboard'
+  fullPaths: '/' | '/app' | '/roster' | '/app/dashboard' | '/app/designations'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app' | '/roster' | '/app/dashboard'
-  id: '__root__' | '/' | '/app' | '/roster' | '/app/dashboard'
+  to: '/' | '/app' | '/roster' | '/app/dashboard' | '/app/designations'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/roster'
+    | '/app/dashboard'
+    | '/app/designations'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -98,15 +113,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/designations': {
+      id: '/app/designations'
+      path: '/designations'
+      fullPath: '/app/designations'
+      preLoaderRoute: typeof AppDesignationsRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
+  AppDesignationsRoute: typeof AppDesignationsRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
+  AppDesignationsRoute: AppDesignationsRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
