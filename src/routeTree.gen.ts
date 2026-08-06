@@ -14,6 +14,7 @@ import { Route as AppRouteImport } from './routes/app'
 import { Route as RosterRouteImport } from './routes/roster'
 import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
 import { Route as AppDesignationsRouteImport } from './routes/app.designations'
+import { Route as AppEmployeesRouteImport } from './routes/app.employees'
 import { Route as AppRetirementRouteImport } from './routes/app.retirement'
 
 const IndexRoute = IndexRouteImport.update({
@@ -41,6 +42,11 @@ const AppDesignationsRoute = AppDesignationsRouteImport.update({
   path: '/designations',
   getParentRoute: () => AppRoute,
 } as any)
+const AppEmployeesRoute = AppEmployeesRouteImport.update({
+  id: '/employees',
+  path: '/employees',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppRetirementRoute = AppRetirementRouteImport.update({
   id: '/retirement',
   path: '/retirement',
@@ -53,6 +59,7 @@ export interface FileRoutesByFullPath {
   '/roster': typeof RosterRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/designations': typeof AppDesignationsRoute
+  '/app/employees': typeof AppEmployeesRoute
   '/app/retirement': typeof AppRetirementRoute
 }
 export interface FileRoutesByTo {
@@ -61,6 +68,7 @@ export interface FileRoutesByTo {
   '/roster': typeof RosterRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/designations': typeof AppDesignationsRoute
+  '/app/employees': typeof AppEmployeesRoute
   '/app/retirement': typeof AppRetirementRoute
 }
 export interface FileRoutesById {
@@ -70,6 +78,7 @@ export interface FileRoutesById {
   '/roster': typeof RosterRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/designations': typeof AppDesignationsRoute
+  '/app/employees': typeof AppEmployeesRoute
   '/app/retirement': typeof AppRetirementRoute
 }
 export interface FileRouteTypes {
@@ -80,6 +89,7 @@ export interface FileRouteTypes {
     | '/roster'
     | '/app/dashboard'
     | '/app/designations'
+    | '/app/employees'
     | '/app/retirement'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -88,6 +98,7 @@ export interface FileRouteTypes {
     | '/roster'
     | '/app/dashboard'
     | '/app/designations'
+    | '/app/employees'
     | '/app/retirement'
   id:
     | '__root__'
@@ -96,6 +107,7 @@ export interface FileRouteTypes {
     | '/roster'
     | '/app/dashboard'
     | '/app/designations'
+    | '/app/employees'
     | '/app/retirement'
   fileRoutesById: FileRoutesById
 }
@@ -142,6 +154,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDesignationsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/employees': {
+      id: '/app/employees'
+      path: '/employees'
+      fullPath: '/app/employees'
+      preLoaderRoute: typeof AppEmployeesRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/retirement': {
       id: '/app/retirement'
       path: '/retirement'
@@ -155,12 +174,14 @@ declare module '@tanstack/react-router' {
 interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
   AppDesignationsRoute: typeof AppDesignationsRoute
+  AppEmployeesRoute: typeof AppEmployeesRoute
   AppRetirementRoute: typeof AppRetirementRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
   AppDesignationsRoute: AppDesignationsRoute,
+  AppEmployeesRoute: AppEmployeesRoute,
   AppRetirementRoute: AppRetirementRoute,
 }
 
