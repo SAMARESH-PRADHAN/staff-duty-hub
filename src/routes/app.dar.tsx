@@ -317,10 +317,10 @@ function DarPage() {
                   const rec: DarRecord = {
                     id: uid("dar"),
                     employeeId: emp.id,
-                    employeeName: emp.name,
-                    actionType: kind,
+                    type: kind,
                     date,
-                    details: details.trim(),
+                    description: details.trim(),
+                    reference: "",
                     recordedBy,
                   };
                   store.setDar([rec, ...store.dar()]);
@@ -329,12 +329,13 @@ function DarPage() {
                   const rec: RewardRecord = {
                     id: uid("rwd"),
                     employeeId: emp.id,
-                    employeeName: emp.name,
-                    rewardType: kind,
+                    type: kind,
                     date,
-                    details: details.trim(),
+                    description: details.trim(),
+                    reference: "",
                     recordedBy,
                   };
+
                   store.setRewards([rec, ...store.rewards()]);
                   logActivity("Reward recorded", `${emp.name} — ${kind}`);
                 }
