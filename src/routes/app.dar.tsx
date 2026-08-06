@@ -215,12 +215,13 @@ function DarPage() {
             <RecordTable
               rows={rewards.map((r) => ({
                 id: r.id,
-                a: r.employeeName,
-                b: r.rewardType,
+                a: nameOf(r.employeeId),
+                b: r.type,
                 c: fmtDate(r.date),
-                d: r.details,
+                d: r.description,
                 e: r.recordedBy,
               }))}
+
               typeLabel="Reward"
               empty="No rewards recorded."
             />
