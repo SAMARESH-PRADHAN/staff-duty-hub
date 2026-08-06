@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as RosterRouteImport } from './routes/roster'
+import { Route as AppDarRouteImport } from './routes/app.dar'
 import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
 import { Route as AppDesignationsRouteImport } from './routes/app.designations'
 import { Route as AppEmployeesRouteImport } from './routes/app.employees'
@@ -32,6 +33,11 @@ const RosterRoute = RosterRouteImport.update({
   id: '/roster',
   path: '/roster',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AppDarRoute = AppDarRouteImport.update({
+  id: '/dar',
+  path: '/dar',
+  getParentRoute: () => AppRoute,
 } as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
   id: '/dashboard',
@@ -63,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/roster': typeof RosterRoute
+  '/app/dar': typeof AppDarRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/designations': typeof AppDesignationsRoute
   '/app/employees': typeof AppEmployeesRoute
@@ -73,6 +80,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/roster': typeof RosterRoute
+  '/app/dar': typeof AppDarRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/designations': typeof AppDesignationsRoute
   '/app/employees': typeof AppEmployeesRoute
@@ -84,6 +92,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/roster': typeof RosterRoute
+  '/app/dar': typeof AppDarRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/designations': typeof AppDesignationsRoute
   '/app/employees': typeof AppEmployeesRoute
@@ -96,6 +105,7 @@ export interface FileRouteTypes {
     | '/'
     | '/app'
     | '/roster'
+    | '/app/dar'
     | '/app/dashboard'
     | '/app/designations'
     | '/app/employees'
@@ -106,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/app'
     | '/roster'
+    | '/app/dar'
     | '/app/dashboard'
     | '/app/designations'
     | '/app/employees'
@@ -116,6 +127,7 @@ export interface FileRouteTypes {
     | '/'
     | '/app'
     | '/roster'
+    | '/app/dar'
     | '/app/dashboard'
     | '/app/designations'
     | '/app/employees'
@@ -151,6 +163,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/roster'
       preLoaderRoute: typeof RosterRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/app/dar': {
+      id: '/app/dar'
+      path: '/dar'
+      fullPath: '/app/dar'
+      preLoaderRoute: typeof AppDarRouteImport
+      parentRoute: typeof AppRoute
     }
     '/app/dashboard': {
       id: '/app/dashboard'
@@ -191,6 +210,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppDarRoute: typeof AppDarRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppDesignationsRoute: typeof AppDesignationsRoute
   AppEmployeesRoute: typeof AppEmployeesRoute
@@ -199,6 +219,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppDarRoute: AppDarRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppDesignationsRoute: AppDesignationsRoute,
   AppEmployeesRoute: AppEmployeesRoute,
