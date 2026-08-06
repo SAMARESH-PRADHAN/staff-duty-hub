@@ -194,12 +194,13 @@ function DarPage() {
             <RecordTable
               rows={dars.map((d) => ({
                 id: d.id,
-                a: d.employeeName,
-                b: d.actionType,
+                a: nameOf(d.employeeId),
+                b: d.type,
                 c: fmtDate(d.date),
-                d: d.details,
+                d: d.description,
                 e: d.recordedBy,
               }))}
+
               typeLabel="Action Type"
               empty="No disciplinary records."
             />
