@@ -15,6 +15,7 @@ import { Route as RosterRouteImport } from './routes/roster'
 import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
 import { Route as AppDesignationsRouteImport } from './routes/app.designations'
 import { Route as AppEmployeesRouteImport } from './routes/app.employees'
+import { Route as AppMovementsRouteImport } from './routes/app.movements'
 import { Route as AppRetirementRouteImport } from './routes/app.retirement'
 
 const IndexRoute = IndexRouteImport.update({
@@ -47,6 +48,11 @@ const AppEmployeesRoute = AppEmployeesRouteImport.update({
   path: '/employees',
   getParentRoute: () => AppRoute,
 } as any)
+const AppMovementsRoute = AppMovementsRouteImport.update({
+  id: '/movements',
+  path: '/movements',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppRetirementRoute = AppRetirementRouteImport.update({
   id: '/retirement',
   path: '/retirement',
@@ -60,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/app/dashboard': typeof AppDashboardRoute
   '/app/designations': typeof AppDesignationsRoute
   '/app/employees': typeof AppEmployeesRoute
+  '/app/movements': typeof AppMovementsRoute
   '/app/retirement': typeof AppRetirementRoute
 }
 export interface FileRoutesByTo {
@@ -69,6 +76,7 @@ export interface FileRoutesByTo {
   '/app/dashboard': typeof AppDashboardRoute
   '/app/designations': typeof AppDesignationsRoute
   '/app/employees': typeof AppEmployeesRoute
+  '/app/movements': typeof AppMovementsRoute
   '/app/retirement': typeof AppRetirementRoute
 }
 export interface FileRoutesById {
@@ -79,6 +87,7 @@ export interface FileRoutesById {
   '/app/dashboard': typeof AppDashboardRoute
   '/app/designations': typeof AppDesignationsRoute
   '/app/employees': typeof AppEmployeesRoute
+  '/app/movements': typeof AppMovementsRoute
   '/app/retirement': typeof AppRetirementRoute
 }
 export interface FileRouteTypes {
@@ -90,6 +99,7 @@ export interface FileRouteTypes {
     | '/app/dashboard'
     | '/app/designations'
     | '/app/employees'
+    | '/app/movements'
     | '/app/retirement'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -99,6 +109,7 @@ export interface FileRouteTypes {
     | '/app/dashboard'
     | '/app/designations'
     | '/app/employees'
+    | '/app/movements'
     | '/app/retirement'
   id:
     | '__root__'
@@ -108,6 +119,7 @@ export interface FileRouteTypes {
     | '/app/dashboard'
     | '/app/designations'
     | '/app/employees'
+    | '/app/movements'
     | '/app/retirement'
   fileRoutesById: FileRoutesById
 }
@@ -161,6 +173,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppEmployeesRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/movements': {
+      id: '/app/movements'
+      path: '/movements'
+      fullPath: '/app/movements'
+      preLoaderRoute: typeof AppMovementsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/retirement': {
       id: '/app/retirement'
       path: '/retirement'
@@ -175,6 +194,7 @@ interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
   AppDesignationsRoute: typeof AppDesignationsRoute
   AppEmployeesRoute: typeof AppEmployeesRoute
+  AppMovementsRoute: typeof AppMovementsRoute
   AppRetirementRoute: typeof AppRetirementRoute
 }
 
@@ -182,6 +202,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
   AppDesignationsRoute: AppDesignationsRoute,
   AppEmployeesRoute: AppEmployeesRoute,
+  AppMovementsRoute: AppMovementsRoute,
   AppRetirementRoute: AppRetirementRoute,
 }
 
