@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Award, Eye, EyeOff, FileText, ShieldAlert } from "lucide-react";
+import { Award, Download, Eye, EyeOff, FileDown, FileText, ShieldAlert } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { calcAge, calcRetirementDate, fmtDate, maskValue, toISO } from "@/lib/retirement";
+import { exportEmployeePdf } from "@/lib/exporters";
 import { logActivity } from "@/lib/storage";
 import type { Employee, ServiceEvent } from "@/lib/types";
 
