@@ -127,6 +127,8 @@ export function EmployeeForm({
     if (!form.batch) e["batch"] = "Batch is required.";
     if (form.phone && !/^[0-9]{10}$/.test(form.phone))
       e["phone"] = "Phone must be 10 digits.";
+    if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email.trim()))
+      e["email"] = "Enter a valid email address.";
     if (form.aadhaar && !/^[0-9]{12}$/.test(form.aadhaar))
       e["aadhaar"] = "Aadhaar must be exactly 12 numeric digits.";
     if (form.pan && !PAN_RE.test(form.pan.toUpperCase()))
