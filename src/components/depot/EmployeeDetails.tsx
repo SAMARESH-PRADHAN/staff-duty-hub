@@ -145,6 +145,8 @@ export function EmployeeDetails({
                 <Info label="Date of Appointment" value={fmtDate(employee.doa)} />
                 <Info label="Qualification" value={employee.qualification} />
                 <Info label="Phone" value={employee.phone} />
+                <Info label="Email" value={employee.email} />
+                <Info label="Blood Group" value={employee.bloodGroup} />
                 <Info label="Emergency Contact" value={employee.emergencyContact} />
                 <div className="sm:col-span-2">
                   <Info label="Address" value={employee.address} />
