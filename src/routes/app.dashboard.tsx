@@ -3,8 +3,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import {
   Users,
   CalendarClock,
-  ShieldAlert,
-  Award,
   Layers,
   AlertTriangle,
 } from "lucide-react";
