@@ -288,6 +288,31 @@ export function EmployeeForm({
                 onChange={(e) => change("phone", e.target.value.replace(/\D/g, ""))}
               />
             </Field>
+            <Field label="Email Address" error={errors["email"]}>
+              <Input
+                type="email"
+                value={form.email ?? ""}
+                placeholder="name@sbcdepot.railnet.in"
+                onChange={(e) => change("email", e.target.value)}
+              />
+            </Field>
+            <Field label="Blood Group">
+              <Select
+                value={form.bloodGroup || ""}
+                onValueChange={(v) => change("bloodGroup", v)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select blood group" />
+                </SelectTrigger>
+                <SelectContent>
+                  {["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"].map((bg) => (
+                    <SelectItem key={bg} value={bg}>
+                      {bg}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </Field>
             <Field label="Emergency Contact Number">
               <Input
                 value={form.emergencyContact}
