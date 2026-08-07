@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Award, Eye, EyeOff, FileText, ShieldAlert } from "lucide-react";
+import { Award, Download, Eye, EyeOff, FileDown, FileText, ShieldAlert } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { calcAge, calcRetirementDate, fmtDate, maskValue, toISO } from "@/lib/retirement";
+import { exportEmployeePdf } from "@/lib/exporters";
 import { logActivity } from "@/lib/storage";
 import type { Employee, ServiceEvent } from "@/lib/types";
 
@@ -144,6 +145,8 @@ export function EmployeeDetails({
                 <Info label="Date of Appointment" value={fmtDate(employee.doa)} />
                 <Info label="Qualification" value={employee.qualification} />
                 <Info label="Phone" value={employee.phone} />
+                <Info label="Email" value={employee.email} />
+                <Info label="Blood Group" value={employee.bloodGroup} />
                 <Info label="Emergency Contact" value={employee.emergencyContact} />
                 <div className="sm:col-span-2">
                   <Info label="Address" value={employee.address} />
@@ -179,21 +182,31 @@ export function EmployeeDetails({
               ) : (
                 <ul className="space-y-2">
                   {employee.documents.map((d) => (
-                    <li key={d.id} className="flex items-center gap-2 text-sm">
+                    <li
+                      key={d.id}
+                      className="flex flex-wrap items-center gap-2 rounded-lg bg-muted/40 px-3 py-2 text-sm"
+                    >
                       <FileText className="size-4 text-muted-foreground" />
-                      {d.dataUrl ? (
-                        <a
-                          href={d.dataUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="font-medium text-info underline-offset-2 hover:underline"
-                        >
-                          {d.name || d.fileName}
-                        </a>
-                      ) : (
-                        <span className="font-medium">{d.name || d.fileName}</span>
-                      )}
+                      <span className="font-medium">{d.name || d.fileName}</span>
                       <span className="text-xs text-muted-foreground">{d.fileName}</span>
+                      {d.dataUrl ? (
+                        <span className="ml-auto flex gap-1">
+                          <Button variant="ghost" size="sm" asChild>
+                            <a href={d.dataUrl} target="_blank" rel="noreferrer">
+                              <Eye className="size-4" /> View
+                            </a>
+                          </Button>
+                          <Button variant="ghost" size="sm" asChild>
+                            <a href={d.dataUrl} download={d.fileName || d.name}>
+                              <Download className="size-4" /> Download
+                            </a>
+                          </Button>
+                        </span>
+                      ) : (
+                        <span className="ml-auto text-xs text-muted-foreground">
+                          No file attached
+                        </span>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -221,6 +234,13 @@ export function EmployeeDetails({
         </div>
 
         <DialogFooter>
+          <Button
+            variant="outline"
+            className="border-info/40 text-info hover:bg-info-soft hover:text-info"
+            onClick={() => exportEmployeePdf(employee)}
+          >
+            <FileDown className="size-4" /> Download PDF
+          </Button>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Close
           </Button>

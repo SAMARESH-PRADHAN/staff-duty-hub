@@ -1,6 +1,15 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Eye, Pencil, Plus, Search, Upload } from "lucide-react";
+import {
+  BookmarkPlus,
+  Eye,
+  FilterX,
+  MessageCircle,
+  Pencil,
+  Plus,
+  Search,
+  Upload,
+} from "lucide-react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/depot/AppShell";
 import { ExportButtons } from "@/components/depot/ExportButtons";
@@ -23,6 +32,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useAppData } from "@/hooks/useAppData";
 import { logActivity, store, uid } from "@/lib/storage";
 import { parseSpreadsheet } from "@/lib/exporters";
@@ -49,19 +64,44 @@ export const Route = createFileRoute("/app/employees")({
   component: EmployeesPage,
 });
 
+function whatsappHref(phone: string) {
+  const digits = phone.replace(/\D/g, "");
+  const withCode = digits.length === 10 ? `91${digits}` : digits;
+  return `https://wa.me/${withCode}`;
+}
+
 function EmployeesPage() {
   const data = useAppData();
-  const [search, setSearch] = useState("");
-  const [designation, setDesignation] = useState("all");
-  const [batch, setBatch] = useState("all");
-  const [gender, setGender] = useState("all");
-  const [status, setStatus] = useState("all");
-  const [ageMin, setAgeMin] = useState("");
-  const [ageMax, setAgeMax] = useState("");
+  const saved = store.employeeFilter();
+  const [search, setSearch] = useState(saved?.search ?? "");
+  const [designation, setDesignation] = useState(saved?.designation ?? "all");
+  const [batch, setBatch] = useState(saved?.batch ?? "all");
+  const [gender, setGender] = useState(saved?.gender ?? "all");
+  const [status, setStatus] = useState(saved?.status ?? "all");
+  const [ageMin, setAgeMin] = useState(saved?.ageMin ?? "");
+  const [ageMax, setAgeMax] = useState(saved?.ageMax ?? "");
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<Employee | null>(null);
   const [detail, setDetail] = useState<Employee | null>(null);
   const [importRows, setImportRows] = useState<Record<string, string>[] | null>(null);
+
+  const saveFilter = () => {
+    store.setEmployeeFilter({ search, designation, batch, gender, status, ageMin, ageMax });
+    toast.success("Filter saved — it will be applied next time you open this page");
+  };
+
+  const clearFilter = () => {
+    setSearch("");
+    setDesignation("all");
+    setBatch("all");
+    setGender("all");
+    setStatus("all");
+    setAgeMin("");
+    setAgeMax("");
+    store.setEmployeeFilter(null);
+    toast.success("Filters cleared");
+  };
+
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -88,6 +128,9 @@ function EmployeesPage() {
     { header: "Designation", value: (e: Employee) => e.designation },
     { header: "Batch", value: (e: Employee) => e.batch },
     { header: "Gender", value: (e: Employee) => e.gender },
+    { header: "Blood Group", value: (e: Employee) => e.bloodGroup ?? "—" },
+    { header: "Phone", value: (e: Employee) => e.phone },
+    { header: "Email", value: (e: Employee) => e.email ?? "—" },
     { header: "Age", value: (e: Employee) => calcAge(e.dob) },
     { header: "Date of Birth", value: (e: Employee) => fmtDate(e.dob) },
     { header: "Date of Appointment", value: (e: Employee) => fmtDate(e.doa) },
@@ -120,6 +163,8 @@ function EmployeesPage() {
       batch: pick(row, ["batch"]) || data.batches[0] || "",
       designation: pick(row, ["designation"]) || data.designations[0] || "",
       phone: pick(row, ["phone"]),
+      email: pick(row, ["email", "mail"]),
+      bloodGroup: pick(row, ["blood"]),
       emergencyContact: pick(row, ["emergency"]),
       address: pick(row, ["address"]),
       aadhaar: pick(row, ["aadhaar"]),
@@ -219,6 +264,19 @@ function EmployeesPage() {
               className="h-9 w-[90px]"
             />
           </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={saveFilter}
+            className="border-amber-accent/50 text-amber-accent hover:bg-amber-soft hover:text-amber-accent"
+          >
+            <BookmarkPlus className="size-4" /> Save Filter
+          </Button>
+          <Button variant="outline" size="sm" onClick={clearFilter}>
+            <FilterX className="size-4" /> Clear
+          </Button>
+
+
 
           <div className="ml-auto flex flex-wrap items-center gap-2">
             <ExportButtons title="Employees" columns={columns} rows={filtered} />
@@ -256,88 +314,129 @@ function EmployeesPage() {
         </>
       }
     >
-      <div className="card-surface overflow-x-auto p-4">
-        <table className="w-full min-w-[900px] text-sm">
-          <thead>
-            <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground">
-              <th className="py-2 pr-3 font-medium">Employee</th>
-              <th className="py-2 pr-3 font-medium">Token</th>
-              <th className="py-2 pr-3 font-medium">HRMS-ID</th>
-              <th className="py-2 pr-3 font-medium">Designation</th>
-              <th className="py-2 pr-3 font-medium">Batch</th>
-              <th className="py-2 pr-3 font-medium">Age</th>
-              <th className="py-2 pr-3 font-medium">Status</th>
-              <th className="py-2 text-right font-medium">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((e) => (
-              <tr key={e.id} className="border-b border-border/60 last:border-0">
-                <td className="py-2.5 pr-3">
-                  <div className="flex items-center gap-3">
-                    <div className="relative">
-                      <div className="size-9 overflow-hidden rounded-full bg-muted">
-                        {e.photo ? (
-                          <img
-                            src={e.photo}
-                            alt={e.name}
-                            className="size-full object-cover"
+      <TooltipProvider delayDuration={150}>
+        <div className="card-surface overflow-x-auto p-4">
+          <table className="w-full min-w-[960px] text-sm">
+            <thead>
+              <tr className="border-b border-border bg-navy/5 text-left text-xs uppercase tracking-wide text-muted-foreground">
+                <th className="py-2 pr-3 font-medium">Employee</th>
+                <th className="py-2 pr-3 font-medium">HRMS-ID</th>
+                <th className="py-2 pr-3 font-medium">Designation</th>
+                <th className="py-2 pr-3 font-medium">Batch</th>
+                <th className="py-2 pr-3 font-medium">Age</th>
+                <th className="py-2 pr-3 font-medium">Status</th>
+                <th className="py-2 text-right font-medium">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map((e) => (
+                <tr
+                  key={e.id}
+                  className="border-b border-border/60 transition-colors last:border-0 hover:bg-muted/40"
+                >
+                  <td className="py-2.5 pr-3">
+                    <div className="flex items-center gap-3">
+                      <div className="relative">
+                        <div className="size-9 overflow-hidden rounded-full bg-muted">
+                          {e.photo ? (
+                            <img
+                              src={e.photo}
+                              alt={e.name}
+                              className="size-full object-cover"
+                            />
+                          ) : null}
+                        </div>
+                        {data.darByEmployee[e.id] ? (
+                          <span
+                            className="absolute -right-0.5 -top-0.5 size-2.5 rounded-full bg-danger ring-2 ring-card"
+                            aria-label="Record marker"
                           />
                         ) : null}
                       </div>
-                      {data.darByEmployee[e.id] ? (
-                        <span
-                          className="absolute -right-0.5 -top-0.5 size-2.5 rounded-full bg-danger ring-2 ring-card"
-                          aria-label="Record marker"
-                        />
-                      ) : null}
+                      <div className="min-w-0 leading-tight">
+                        <p className="truncate font-medium">{e.name}</p>
+                        <p className="truncate text-xs text-muted-foreground">
+                          Token {e.tokenNo || "—"}
+                        </p>
+                        <p className="truncate text-xs text-muted-foreground">
+                          {e.email || "No email on record"}
+                        </p>
+                      </div>
                     </div>
-                    <span className="font-medium">{e.name}</span>
-                  </div>
-                </td>
-                <td className="py-2.5 pr-3">{e.tokenNo}</td>
-                <td className="py-2.5 pr-3">{e.hrmsId}</td>
-                <td className="py-2.5 pr-3">{e.designation}</td>
-                <td className="py-2.5 pr-3">{e.batch}</td>
-                <td className="py-2.5 pr-3">{calcAge(e.dob)}</td>
-                <td className="py-2.5 pr-3">
-                  <Badge variant={e.status === "Active" ? "default" : "secondary"}>
-                    {e.status}
-                  </Badge>
-                </td>
-                <td className="py-2 text-right">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    aria-label={`Edit ${e.name}`}
-                    onClick={() => {
-                      setEditing(e);
-                      setFormOpen(true);
-                    }}
-                  >
-                    <Pencil className="size-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    aria-label={`Details for ${e.name}`}
-                    onClick={() => setDetail(e)}
-                  >
-                    <Eye className="size-4" />
-                  </Button>
-                </td>
-              </tr>
-            ))}
-            {filtered.length === 0 ? (
-              <tr>
-                <td colSpan={8} className="py-10 text-center text-muted-foreground">
-                  No employees match these filters.
-                </td>
-              </tr>
-            ) : null}
-          </tbody>
-        </table>
-      </div>
+                  </td>
+                  <td className="py-2.5 pr-3">{e.hrmsId}</td>
+                  <td className="py-2.5 pr-3">{e.designation}</td>
+                  <td className="py-2.5 pr-3">{e.batch}</td>
+                  <td className="py-2.5 pr-3">{calcAge(e.dob)}</td>
+                  <td className="py-2.5 pr-3">
+                    <Badge variant={e.status === "Active" ? "default" : "secondary"}>
+                      {e.status}
+                    </Badge>
+                  </td>
+                  <td className="py-2 text-right">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          aria-label={`Edit ${e.name}`}
+                          onClick={() => {
+                            setEditing(e);
+                            setFormOpen(true);
+                          }}
+                        >
+                          <Pencil className="size-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>Edit</TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          aria-label={`Details for ${e.name}`}
+                          onClick={() => setDetail(e)}
+                        >
+                          <Eye className="size-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>Employee Details</TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-success hover:bg-success-soft hover:text-success"
+                          disabled={!e.phone}
+                          aria-label={`WhatsApp ${e.name}`}
+                          onClick={() =>
+                            window.open(whatsappHref(e.phone), "_blank", "noopener")
+                          }
+                        >
+                          <MessageCircle className="size-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        {e.phone ? `WhatsApp ${e.phone}` : "No phone number"}
+                      </TooltipContent>
+                    </Tooltip>
+                  </td>
+                </tr>
+              ))}
+              {filtered.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="py-10 text-center text-muted-foreground">
+                    No employees match these filters.
+                  </td>
+                </tr>
+              ) : null}
+            </tbody>
+          </table>
+        </div>
+      </TooltipProvider>
+
 
       <EmployeeForm
         open={formOpen}

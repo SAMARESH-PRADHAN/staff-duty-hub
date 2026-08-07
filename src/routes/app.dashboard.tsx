@@ -3,8 +3,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import {
   Users,
   CalendarClock,
-  ShieldAlert,
-  Award,
   Layers,
   AlertTriangle,
 } from "lucide-react";
@@ -95,8 +93,6 @@ function DashboardPage() {
     return {
       onRoll: onRoll.length,
       retiring12,
-      darEmployees: Object.keys(data.darByEmployee).length,
-      rewardEmployees: Object.keys(data.rewardsByEmployee).length,
       cleanup,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -136,26 +132,13 @@ function DashboardPage() {
 
   return (
     <AppShell title="Dashboard" subtitle="Depot staff overview & analytics">
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard label="Employees on Roll" value={stats.onRoll} icon={Users} tone="navy" />
         <StatCard
           label="Retiring in 12 Months"
           value={stats.retiring12}
           icon={CalendarClock}
           tone="amber"
-        />
-        <StatCard
-          label="Employees with DAR Record"
-          value={stats.darEmployees}
-          icon={ShieldAlert}
-          tone="danger"
-          hint="Details available only in the protected module"
-        />
-        <StatCard
-          label="Employees with Reward"
-          value={stats.rewardEmployees}
-          icon={Award}
-          tone="success"
         />
         <StatCard
           label="Batches / Designations"
@@ -171,6 +154,7 @@ function DashboardPage() {
           hint="Missing HRMS-ID or invalid Aadhaar"
         />
       </div>
+
 
       <div className="mt-4 grid gap-4 lg:grid-cols-2">
         <ChartCard title="Headcount by Designation">
@@ -237,23 +221,10 @@ function DashboardPage() {
         </ChartCard>
       </div>
 
-      <div className="card-surface mt-4 p-4">
-        <h3 className="text-sm font-semibold">Recent Activity</h3>
-        <ul className="mt-3 divide-y divide-border">
-          {data.activity.slice(0, 10).map((a) => (
-            <li key={a.id} className="flex flex-wrap items-baseline gap-x-2 py-2.5 text-sm">
-              <span className="font-medium">{a.action}</span>
-              <span className="text-muted-foreground">— {a.target}</span>
-              <span className="ml-auto text-xs text-muted-foreground">
-                {a.actor} · {new Date(a.timestamp).toLocaleString()}
-              </span>
-            </li>
-          ))}
-          {data.activity.length === 0 ? (
-            <li className="py-3 text-sm text-muted-foreground">No activity yet.</li>
-          ) : null}
-        </ul>
-      </div>
+      <p className="mt-4 text-xs text-muted-foreground">
+        Recent HR activity is available any time from the notification bell in the header.
+      </p>
+
     </AppShell>
   );
 }

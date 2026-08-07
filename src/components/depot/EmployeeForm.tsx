@@ -32,6 +32,8 @@ const EMPTY: Employee = {
   batch: "",
   designation: "",
   phone: "",
+  email: "",
+  bloodGroup: "",
   emergencyContact: "",
   address: "",
   aadhaar: "",
@@ -125,6 +127,8 @@ export function EmployeeForm({
     if (!form.batch) e["batch"] = "Batch is required.";
     if (form.phone && !/^[0-9]{10}$/.test(form.phone))
       e["phone"] = "Phone must be 10 digits.";
+    if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email.trim()))
+      e["email"] = "Enter a valid email address.";
     if (form.aadhaar && !/^[0-9]{12}$/.test(form.aadhaar))
       e["aadhaar"] = "Aadhaar must be exactly 12 numeric digits.";
     if (form.pan && !PAN_RE.test(form.pan.toUpperCase()))
@@ -283,6 +287,31 @@ export function EmployeeForm({
                 inputMode="numeric"
                 onChange={(e) => change("phone", e.target.value.replace(/\D/g, ""))}
               />
+            </Field>
+            <Field label="Email Address" error={errors["email"]}>
+              <Input
+                type="email"
+                value={form.email ?? ""}
+                placeholder="name@sbcdepot.railnet.in"
+                onChange={(e) => change("email", e.target.value)}
+              />
+            </Field>
+            <Field label="Blood Group">
+              <Select
+                value={form.bloodGroup || ""}
+                onValueChange={(v) => change("bloodGroup", v)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select blood group" />
+                </SelectTrigger>
+                <SelectContent>
+                  {["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"].map((bg) => (
+                    <SelectItem key={bg} value={bg}>
+                      {bg}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </Field>
             <Field label="Emergency Contact Number">
               <Input
