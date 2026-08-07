@@ -95,8 +95,6 @@ function DashboardPage() {
     return {
       onRoll: onRoll.length,
       retiring12,
-      darEmployees: Object.keys(data.darByEmployee).length,
-      rewardEmployees: Object.keys(data.rewardsByEmployee).length,
       cleanup,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
