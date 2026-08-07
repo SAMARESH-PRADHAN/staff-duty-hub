@@ -22,6 +22,7 @@ export const KEYS = {
   darPassword: PREFIX + "dar-password",
   session: PREFIX + "session",
   seeded: PREFIX + "seeded-v1",
+  employeeFilter: PREFIX + "employee-filter",
 } as const;
 
 type Key = (typeof KEYS)[keyof typeof KEYS];
