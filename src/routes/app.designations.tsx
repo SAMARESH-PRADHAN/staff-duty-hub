@@ -100,6 +100,7 @@ function MasterPanel({
           <ExportButtons
             title={`${label}s`}
             rows={rows}
+            pdf={false}
             columns={[
               { header: label, value: (r: Row) => r.name },
               { header: "Employees", value: (r: Row) => r.count },
