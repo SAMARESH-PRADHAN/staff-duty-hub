@@ -1,6 +1,15 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Eye, Pencil, Plus, Search, Upload } from "lucide-react";
+import {
+  BookmarkPlus,
+  Eye,
+  FilterX,
+  MessageCircle,
+  Pencil,
+  Plus,
+  Search,
+  Upload,
+} from "lucide-react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/depot/AppShell";
 import { ExportButtons } from "@/components/depot/ExportButtons";
@@ -23,6 +32,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useAppData } from "@/hooks/useAppData";
 import { logActivity, store, uid } from "@/lib/storage";
 import { parseSpreadsheet } from "@/lib/exporters";
