@@ -18,6 +18,8 @@ export interface Employee {
   batch: string;
   designation: string;
   phone: string;
+  email?: string;
+  bloodGroup?: string;
   emergencyContact: string;
   address: string;
   aadhaar: string;
