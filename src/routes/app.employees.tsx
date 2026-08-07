@@ -64,19 +64,44 @@ export const Route = createFileRoute("/app/employees")({
   component: EmployeesPage,
 });
 
+function whatsappHref(phone: string) {
+  const digits = phone.replace(/\D/g, "");
+  const withCode = digits.length === 10 ? `91${digits}` : digits;
+  return `https://wa.me/${withCode}`;
+}
+
 function EmployeesPage() {
   const data = useAppData();
-  const [search, setSearch] = useState("");
-  const [designation, setDesignation] = useState("all");
-  const [batch, setBatch] = useState("all");
-  const [gender, setGender] = useState("all");
-  const [status, setStatus] = useState("all");
-  const [ageMin, setAgeMin] = useState("");
-  const [ageMax, setAgeMax] = useState("");
+  const saved = store.employeeFilter();
+  const [search, setSearch] = useState(saved?.search ?? "");
+  const [designation, setDesignation] = useState(saved?.designation ?? "all");
+  const [batch, setBatch] = useState(saved?.batch ?? "all");
+  const [gender, setGender] = useState(saved?.gender ?? "all");
+  const [status, setStatus] = useState(saved?.status ?? "all");
+  const [ageMin, setAgeMin] = useState(saved?.ageMin ?? "");
+  const [ageMax, setAgeMax] = useState(saved?.ageMax ?? "");
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<Employee | null>(null);
   const [detail, setDetail] = useState<Employee | null>(null);
   const [importRows, setImportRows] = useState<Record<string, string>[] | null>(null);
+
+  const saveFilter = () => {
+    store.setEmployeeFilter({ search, designation, batch, gender, status, ageMin, ageMax });
+    toast.success("Filter saved — it will be applied next time you open this page");
+  };
+
+  const clearFilter = () => {
+    setSearch("");
+    setDesignation("all");
+    setBatch("all");
+    setGender("all");
+    setStatus("all");
+    setAgeMin("");
+    setAgeMax("");
+    store.setEmployeeFilter(null);
+    toast.success("Filters cleared");
+  };
+
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
