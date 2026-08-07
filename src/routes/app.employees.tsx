@@ -314,88 +314,129 @@ function EmployeesPage() {
         </>
       }
     >
-      <div className="card-surface overflow-x-auto p-4">
-        <table className="w-full min-w-[900px] text-sm">
-          <thead>
-            <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground">
-              <th className="py-2 pr-3 font-medium">Employee</th>
-              <th className="py-2 pr-3 font-medium">Token</th>
-              <th className="py-2 pr-3 font-medium">HRMS-ID</th>
-              <th className="py-2 pr-3 font-medium">Designation</th>
-              <th className="py-2 pr-3 font-medium">Batch</th>
-              <th className="py-2 pr-3 font-medium">Age</th>
-              <th className="py-2 pr-3 font-medium">Status</th>
-              <th className="py-2 text-right font-medium">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((e) => (
-              <tr key={e.id} className="border-b border-border/60 last:border-0">
-                <td className="py-2.5 pr-3">
-                  <div className="flex items-center gap-3">
-                    <div className="relative">
-                      <div className="size-9 overflow-hidden rounded-full bg-muted">
-                        {e.photo ? (
-                          <img
-                            src={e.photo}
-                            alt={e.name}
-                            className="size-full object-cover"
+      <TooltipProvider delayDuration={150}>
+        <div className="card-surface overflow-x-auto p-4">
+          <table className="w-full min-w-[960px] text-sm">
+            <thead>
+              <tr className="border-b border-border bg-navy/5 text-left text-xs uppercase tracking-wide text-muted-foreground">
+                <th className="py-2 pr-3 font-medium">Employee</th>
+                <th className="py-2 pr-3 font-medium">HRMS-ID</th>
+                <th className="py-2 pr-3 font-medium">Designation</th>
+                <th className="py-2 pr-3 font-medium">Batch</th>
+                <th className="py-2 pr-3 font-medium">Age</th>
+                <th className="py-2 pr-3 font-medium">Status</th>
+                <th className="py-2 text-right font-medium">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map((e) => (
+                <tr
+                  key={e.id}
+                  className="border-b border-border/60 transition-colors last:border-0 hover:bg-muted/40"
+                >
+                  <td className="py-2.5 pr-3">
+                    <div className="flex items-center gap-3">
+                      <div className="relative">
+                        <div className="size-9 overflow-hidden rounded-full bg-muted">
+                          {e.photo ? (
+                            <img
+                              src={e.photo}
+                              alt={e.name}
+                              className="size-full object-cover"
+                            />
+                          ) : null}
+                        </div>
+                        {data.darByEmployee[e.id] ? (
+                          <span
+                            className="absolute -right-0.5 -top-0.5 size-2.5 rounded-full bg-danger ring-2 ring-card"
+                            aria-label="Record marker"
                           />
                         ) : null}
                       </div>
-                      {data.darByEmployee[e.id] ? (
-                        <span
-                          className="absolute -right-0.5 -top-0.5 size-2.5 rounded-full bg-danger ring-2 ring-card"
-                          aria-label="Record marker"
-                        />
-                      ) : null}
+                      <div className="min-w-0 leading-tight">
+                        <p className="truncate font-medium">{e.name}</p>
+                        <p className="truncate text-xs text-muted-foreground">
+                          Token {e.tokenNo || "—"}
+                        </p>
+                        <p className="truncate text-xs text-muted-foreground">
+                          {e.email || "No email on record"}
+                        </p>
+                      </div>
                     </div>
-                    <span className="font-medium">{e.name}</span>
-                  </div>
-                </td>
-                <td className="py-2.5 pr-3">{e.tokenNo}</td>
-                <td className="py-2.5 pr-3">{e.hrmsId}</td>
-                <td className="py-2.5 pr-3">{e.designation}</td>
-                <td className="py-2.5 pr-3">{e.batch}</td>
-                <td className="py-2.5 pr-3">{calcAge(e.dob)}</td>
-                <td className="py-2.5 pr-3">
-                  <Badge variant={e.status === "Active" ? "default" : "secondary"}>
-                    {e.status}
-                  </Badge>
-                </td>
-                <td className="py-2 text-right">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    aria-label={`Edit ${e.name}`}
-                    onClick={() => {
-                      setEditing(e);
-                      setFormOpen(true);
-                    }}
-                  >
-                    <Pencil className="size-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    aria-label={`Details for ${e.name}`}
-                    onClick={() => setDetail(e)}
-                  >
-                    <Eye className="size-4" />
-                  </Button>
-                </td>
-              </tr>
-            ))}
-            {filtered.length === 0 ? (
-              <tr>
-                <td colSpan={8} className="py-10 text-center text-muted-foreground">
-                  No employees match these filters.
-                </td>
-              </tr>
-            ) : null}
-          </tbody>
-        </table>
-      </div>
+                  </td>
+                  <td className="py-2.5 pr-3">{e.hrmsId}</td>
+                  <td className="py-2.5 pr-3">{e.designation}</td>
+                  <td className="py-2.5 pr-3">{e.batch}</td>
+                  <td className="py-2.5 pr-3">{calcAge(e.dob)}</td>
+                  <td className="py-2.5 pr-3">
+                    <Badge variant={e.status === "Active" ? "default" : "secondary"}>
+                      {e.status}
+                    </Badge>
+                  </td>
+                  <td className="py-2 text-right">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          aria-label={`Edit ${e.name}`}
+                          onClick={() => {
+                            setEditing(e);
+                            setFormOpen(true);
+                          }}
+                        >
+                          <Pencil className="size-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>Edit</TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          aria-label={`Details for ${e.name}`}
+                          onClick={() => setDetail(e)}
+                        >
+                          <Eye className="size-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>Employee Details</TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-success hover:bg-success-soft hover:text-success"
+                          disabled={!e.phone}
+                          aria-label={`WhatsApp ${e.name}`}
+                          onClick={() =>
+                            window.open(whatsappHref(e.phone), "_blank", "noopener")
+                          }
+                        >
+                          <MessageCircle className="size-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        {e.phone ? `WhatsApp ${e.phone}` : "No phone number"}
+                      </TooltipContent>
+                    </Tooltip>
+                  </td>
+                </tr>
+              ))}
+              {filtered.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="py-10 text-center text-muted-foreground">
+                    No employees match these filters.
+                  </td>
+                </tr>
+              ) : null}
+            </tbody>
+          </table>
+        </div>
+      </TooltipProvider>
+
 
       <EmployeeForm
         open={formOpen}
