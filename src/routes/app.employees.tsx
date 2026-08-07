@@ -264,6 +264,19 @@ function EmployeesPage() {
               className="h-9 w-[90px]"
             />
           </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={saveFilter}
+            className="border-amber-accent/50 text-amber-accent hover:bg-amber-soft hover:text-amber-accent"
+          >
+            <BookmarkPlus className="size-4" /> Save Filter
+          </Button>
+          <Button variant="outline" size="sm" onClick={clearFilter}>
+            <FilterX className="size-4" /> Clear
+          </Button>
+
+
 
           <div className="ml-auto flex flex-wrap items-center gap-2">
             <ExportButtons title="Employees" columns={columns} rows={filtered} />
