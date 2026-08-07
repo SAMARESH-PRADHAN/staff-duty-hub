@@ -234,6 +234,13 @@ export function EmployeeDetails({
         </div>
 
         <DialogFooter>
+          <Button
+            variant="outline"
+            className="border-info/40 text-info hover:bg-info-soft hover:text-info"
+            onClick={() => exportEmployeePdf(employee)}
+          >
+            <FileDown className="size-4" /> Download PDF
+          </Button>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Close
           </Button>
