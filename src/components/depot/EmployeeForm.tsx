@@ -32,6 +32,8 @@ const EMPTY: Employee = {
   batch: "",
   designation: "",
   phone: "",
+  email: "",
+  bloodGroup: "",
   emergencyContact: "",
   address: "",
   aadhaar: "",
