@@ -163,6 +163,8 @@ function EmployeesPage() {
       batch: pick(row, ["batch"]) || data.batches[0] || "",
       designation: pick(row, ["designation"]) || data.designations[0] || "",
       phone: pick(row, ["phone"]),
+      email: pick(row, ["email", "mail"]),
+      bloodGroup: pick(row, ["blood"]),
       emergencyContact: pick(row, ["emergency"]),
       address: pick(row, ["address"]),
       aadhaar: pick(row, ["aadhaar"]),
