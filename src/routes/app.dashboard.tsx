@@ -223,23 +223,10 @@ function DashboardPage() {
         </ChartCard>
       </div>
 
-      <div className="card-surface mt-4 p-4">
-        <h3 className="text-sm font-semibold">Recent Activity</h3>
-        <ul className="mt-3 divide-y divide-border">
-          {data.activity.slice(0, 10).map((a) => (
-            <li key={a.id} className="flex flex-wrap items-baseline gap-x-2 py-2.5 text-sm">
-              <span className="font-medium">{a.action}</span>
-              <span className="text-muted-foreground">— {a.target}</span>
-              <span className="ml-auto text-xs text-muted-foreground">
-                {a.actor} · {new Date(a.timestamp).toLocaleString()}
-              </span>
-            </li>
-          ))}
-          {data.activity.length === 0 ? (
-            <li className="py-3 text-sm text-muted-foreground">No activity yet.</li>
-          ) : null}
-        </ul>
-      </div>
+      <p className="mt-4 text-xs text-muted-foreground">
+        Recent HR activity is available any time from the notification bell in the header.
+      </p>
+
     </AppShell>
   );
 }
