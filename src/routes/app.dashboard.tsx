@@ -134,26 +134,13 @@ function DashboardPage() {
 
   return (
     <AppShell title="Dashboard" subtitle="Depot staff overview & analytics">
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard label="Employees on Roll" value={stats.onRoll} icon={Users} tone="navy" />
         <StatCard
           label="Retiring in 12 Months"
           value={stats.retiring12}
           icon={CalendarClock}
           tone="amber"
-        />
-        <StatCard
-          label="Employees with DAR Record"
-          value={stats.darEmployees}
-          icon={ShieldAlert}
-          tone="danger"
-          hint="Details available only in the protected module"
-        />
-        <StatCard
-          label="Employees with Reward"
-          value={stats.rewardEmployees}
-          icon={Award}
-          tone="success"
         />
         <StatCard
           label="Batches / Designations"
@@ -169,6 +156,7 @@ function DashboardPage() {
           hint="Missing HRMS-ID or invalid Aadhaar"
         />
       </div>
+
 
       <div className="mt-4 grid gap-4 lg:grid-cols-2">
         <ChartCard title="Headcount by Designation">
