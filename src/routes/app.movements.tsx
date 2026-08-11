@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRightLeft, BadgeCheck, LogOut, Info } from "lucide-react";
+import { ArrowRightLeft, BadgeCheck, LogOut, Info, FilterX } from "lucide-react";
 import {
   Bar,
   BarChart,
@@ -342,7 +342,21 @@ function MovementsPage() {
                 ))}
               </SelectContent>
             </Select>
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-9"
+              onClick={() => {
+                setTypeFilter("all");
+                setMonthFilter("");
+                setBatchFilter("all");
+                setDesigFilter("all");
+              }}
+            >
+              <FilterX className="size-4" /> Clear
+            </Button>
           </div>
+
         </div>
 
         <div className="overflow-x-auto">
