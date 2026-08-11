@@ -368,7 +368,6 @@ function MovementsPage() {
                 <th className="py-2 pr-3 font-medium">From → To</th>
                 <th className="py-2 pr-3 font-medium">Date</th>
                 <th className="py-2 pr-3 font-medium">Remarks</th>
-                <th className="py-2 pr-3 font-medium">Recorded By</th>
               </tr>
             </thead>
             <tbody>
@@ -381,12 +380,11 @@ function MovementsPage() {
                   </td>
                   <td className="py-2.5 pr-3">{fmtDate(e.date)}</td>
                   <td className="py-2.5 pr-3 text-muted-foreground">{e.remarks || "—"}</td>
-                  <td className="py-2.5 pr-3">{e.recordedBy}</td>
                 </tr>
               ))}
               {history.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-10 text-center text-muted-foreground">
+                  <td colSpan={5} className="py-10 text-center text-muted-foreground">
                     No events match these filters.
                   </td>
                 </tr>
