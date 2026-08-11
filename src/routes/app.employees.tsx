@@ -272,9 +272,16 @@ function EmployeesPage() {
           >
             <BookmarkPlus className="size-4" /> Save Filter
           </Button>
+          {savedFilter ? (
+            <Button variant="secondary" size="sm" onClick={applySavedFilter}>
+              <BookmarkCheck className="size-4" /> Apply Saved
+            </Button>
+          ) : null}
           <Button variant="outline" size="sm" onClick={clearFilter}>
             <FilterX className="size-4" /> Clear
           </Button>
+
+
 
 
 
