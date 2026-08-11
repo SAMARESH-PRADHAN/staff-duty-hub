@@ -236,7 +236,6 @@ function MovementsPage() {
     { header: "To", value: (e: ServiceEvent) => e.to },
     { header: "Effective Date", value: (e: ServiceEvent) => fmtDate(e.date) },
     { header: "Remarks", value: (e: ServiceEvent) => e.remarks },
-    { header: "Recorded By", value: (e: ServiceEvent) => e.recordedBy },
   ];
 
   return (
