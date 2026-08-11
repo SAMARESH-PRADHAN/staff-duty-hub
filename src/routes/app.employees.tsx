@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
+  BookmarkCheck,
   BookmarkPlus,
   Eye,
   FilterX,
@@ -40,6 +41,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useAppData } from "@/hooks/useAppData";
 import { logActivity, store, uid } from "@/lib/storage";
+import type { SavedEmployeeFilter } from "@/lib/storage";
 import { parseSpreadsheet } from "@/lib/exporters";
 import { calcAge, calcRetirementDate, fmtDate, toISO } from "@/lib/retirement";
 import type { Employee } from "@/lib/types";
