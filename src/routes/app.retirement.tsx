@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { FilterX } from "lucide-react";
 import { AppShell } from "@/components/depot/AppShell";
 import { ExportButtons } from "@/components/depot/ExportButtons";
 import { Button } from "@/components/ui/button";
@@ -63,6 +64,14 @@ function RetirementPage() {
   const [designation, setDesignation] = useState("all");
   const [batch, setBatch] = useState("all");
   const [grouped, setGrouped] = useState(false);
+
+  const clearFilters = () => {
+    setFrom(toISO(today));
+    setTo(toISO(addMonths(today, 12)));
+    setDesignation("all");
+    setBatch("all");
+    setGrouped(false);
+  };
 
   const preset = (months: number) => {
     setFrom(toISO(today));
@@ -186,6 +195,7 @@ function RetirementPage() {
             </div>
             <div className="flex gap-1">
               {[
+                ["1M", 1],
                 ["3M", 3],
                 ["6M", 6],
                 ["1Y", 12],
@@ -233,6 +243,9 @@ function RetirementPage() {
               onClick={() => setGrouped((g) => !g)}
             >
               {grouped ? "Flat list" : "Group by designation"}
+            </Button>
+            <Button variant="outline" size="sm" onClick={clearFilters}>
+              <FilterX className="size-4" /> Clear
             </Button>
           </div>
           <div className="ml-auto">

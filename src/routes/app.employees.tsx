@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
+  BookmarkCheck,
   BookmarkPlus,
   Eye,
   FilterX,
@@ -40,6 +41,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useAppData } from "@/hooks/useAppData";
 import { logActivity, store, uid } from "@/lib/storage";
+import type { SavedEmployeeFilter } from "@/lib/storage";
 import { parseSpreadsheet } from "@/lib/exporters";
 import { calcAge, calcRetirementDate, fmtDate, toISO } from "@/lib/retirement";
 import type { Employee } from "@/lib/types";
@@ -72,22 +74,46 @@ function whatsappHref(phone: string) {
 
 function EmployeesPage() {
   const data = useAppData();
-  const saved = store.employeeFilter();
-  const [search, setSearch] = useState(saved?.search ?? "");
-  const [designation, setDesignation] = useState(saved?.designation ?? "all");
-  const [batch, setBatch] = useState(saved?.batch ?? "all");
-  const [gender, setGender] = useState(saved?.gender ?? "all");
-  const [status, setStatus] = useState(saved?.status ?? "all");
-  const [ageMin, setAgeMin] = useState(saved?.ageMin ?? "");
-  const [ageMax, setAgeMax] = useState(saved?.ageMax ?? "");
+  const [savedFilter, setSavedFilter] = useState<SavedEmployeeFilter | null>(() =>
+    store.employeeFilter(),
+  );
+  const [search, setSearch] = useState(savedFilter?.search ?? "");
+  const [designation, setDesignation] = useState(savedFilter?.designation ?? "all");
+  const [batch, setBatch] = useState(savedFilter?.batch ?? "all");
+  const [gender, setGender] = useState(savedFilter?.gender ?? "all");
+  const [status, setStatus] = useState(savedFilter?.status ?? "all");
+  const [ageMin, setAgeMin] = useState(savedFilter?.ageMin ?? "");
+  const [ageMax, setAgeMax] = useState(savedFilter?.ageMax ?? "");
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<Employee | null>(null);
   const [detail, setDetail] = useState<Employee | null>(null);
   const [importRows, setImportRows] = useState<Record<string, string>[] | null>(null);
 
   const saveFilter = () => {
-    store.setEmployeeFilter({ search, designation, batch, gender, status, ageMin, ageMax });
-    toast.success("Filter saved — it will be applied next time you open this page");
+    const next: SavedEmployeeFilter = {
+      search,
+      designation,
+      batch,
+      gender,
+      status,
+      ageMin,
+      ageMax,
+    };
+    store.setEmployeeFilter(next);
+    setSavedFilter(next);
+    toast.success("Filter saved — reapply it any time with “Apply Saved”");
+  };
+
+  const applySavedFilter = () => {
+    if (!savedFilter) return;
+    setSearch(savedFilter.search);
+    setDesignation(savedFilter.designation);
+    setBatch(savedFilter.batch);
+    setGender(savedFilter.gender);
+    setStatus(savedFilter.status);
+    setAgeMin(savedFilter.ageMin);
+    setAgeMax(savedFilter.ageMax);
+    toast.success("Saved filter applied");
   };
 
   const clearFilter = () => {
@@ -98,9 +124,9 @@ function EmployeesPage() {
     setStatus("all");
     setAgeMin("");
     setAgeMax("");
-    store.setEmployeeFilter(null);
     toast.success("Filters cleared");
   };
+
 
 
   const filtered = useMemo(() => {
@@ -272,9 +298,16 @@ function EmployeesPage() {
           >
             <BookmarkPlus className="size-4" /> Save Filter
           </Button>
+          {savedFilter ? (
+            <Button variant="secondary" size="sm" onClick={applySavedFilter}>
+              <BookmarkCheck className="size-4" /> Apply Saved
+            </Button>
+          ) : null}
           <Button variant="outline" size="sm" onClick={clearFilter}>
             <FilterX className="size-4" /> Clear
           </Button>
+
+
 
 
 

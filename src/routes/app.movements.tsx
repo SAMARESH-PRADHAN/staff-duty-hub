@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRightLeft, BadgeCheck, LogOut, Info } from "lucide-react";
+import { ArrowRightLeft, BadgeCheck, LogOut, Info, FilterX } from "lucide-react";
 import {
   Bar,
   BarChart,
@@ -236,7 +236,6 @@ function MovementsPage() {
     { header: "To", value: (e: ServiceEvent) => e.to },
     { header: "Effective Date", value: (e: ServiceEvent) => fmtDate(e.date) },
     { header: "Remarks", value: (e: ServiceEvent) => e.remarks },
-    { header: "Recorded By", value: (e: ServiceEvent) => e.recordedBy },
   ];
 
   return (
@@ -342,7 +341,21 @@ function MovementsPage() {
                 ))}
               </SelectContent>
             </Select>
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-9"
+              onClick={() => {
+                setTypeFilter("all");
+                setMonthFilter("");
+                setBatchFilter("all");
+                setDesigFilter("all");
+              }}
+            >
+              <FilterX className="size-4" /> Clear
+            </Button>
           </div>
+
         </div>
 
         <div className="overflow-x-auto">
@@ -354,7 +367,6 @@ function MovementsPage() {
                 <th className="py-2 pr-3 font-medium">From → To</th>
                 <th className="py-2 pr-3 font-medium">Date</th>
                 <th className="py-2 pr-3 font-medium">Remarks</th>
-                <th className="py-2 pr-3 font-medium">Recorded By</th>
               </tr>
             </thead>
             <tbody>
@@ -367,12 +379,11 @@ function MovementsPage() {
                   </td>
                   <td className="py-2.5 pr-3">{fmtDate(e.date)}</td>
                   <td className="py-2.5 pr-3 text-muted-foreground">{e.remarks || "—"}</td>
-                  <td className="py-2.5 pr-3">{e.recordedBy}</td>
                 </tr>
               ))}
               {history.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-10 text-center text-muted-foreground">
+                  <td colSpan={5} className="py-10 text-center text-muted-foreground">
                     No events match these filters.
                   </td>
                 </tr>
